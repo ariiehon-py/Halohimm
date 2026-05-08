@@ -15,7 +15,7 @@ import { supabase } from "../../lib/supabase";
 
 type JarasFormData = {
   pengaduanDitujukan: string;
-  pengaduanLainnya?: string;
+  departemen: string;
   identitasYangDiadu: string;
   jelaskanPengaduan: string;
   saranPenyelesaian: string;
@@ -25,10 +25,22 @@ type JarasFormData = {
 const TARGET_OPTIONS = [
   "Ketua Himpunan",
   "Wakil Ketua Himpunan",
-  "Pengurus Inti",
-  "Departemen / Divisi",
-  "Program Kerja",
-  "Lainnya",
+  "Dewan Pengawas Himpunan",
+  "Kepala Departemen",
+  "Steering Committee",
+  "Penanggung Jawab",
+  "Wakil Penanggung Jawab",
+  "Staff",
+];
+
+const DEPARTEMEN_OPTIONS = [
+  "PSDM",
+  "Hubungan Luar",
+  "Seni dan Olahraga",
+  "Ekonomi Kreatif",
+  "Media dan Informasi",
+  "Kesekretariatan dan Kebendaharaan",
+  "Keilmuan dan Prestasi",
 ];
 
 export default function JarasForm() {
@@ -36,14 +48,11 @@ export default function JarasForm() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<JarasFormData>();
   
   const [submitted, setSubmitted] = useState(false);
   const [identity, setIdentity] = useState({ nama: "", angkatan: "" });
-  
-  const ditujukan = watch("pengaduanDitujukan");
 
   useEffect(() => {
     const storedIdentity = sessionStorage.getItem("jaras_identity");
@@ -108,7 +117,7 @@ export default function JarasForm() {
             nama: identity.nama,
             angkatan: identity.angkatan,
             pengaduan_ditujukan: data.pengaduanDitujukan,
-            pengaduan_lainnya: data.pengaduanLainnya || null,
+            departemen: data.departemen,
             identitas_yang_diadu: data.identitasYangDiadu,
             jelaskan_pengaduan: data.jelaskanPengaduan,
             saran_penyelesaian: data.saranPenyelesaian,
@@ -125,6 +134,7 @@ export default function JarasForm() {
 👤 *Nama Pengadu:* ${identity.nama}
 🎓 *Angkatan:* ${identity.angkatan}
 🎯 *Ditujukan Ke:* ${data.pengaduanDitujukan}
+🏢 *Departemen:* ${data.departemen}
 👤 *Pihak Teradu:* ${data.identitasYangDiadu}
 📝 *Isi Pengaduan:* ${data.jelaskanPengaduan}
 💡 *Saran Solusi:* ${data.saranPenyelesaian}
@@ -175,7 +185,7 @@ export default function JarasForm() {
         >
           <div className="space-y-2">
             <Label>Pengaduan Ditujukan Kepada</Label>
-            <div className="grid sm:grid-cols-2 gap-2">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
               {TARGET_OPTIONS.map((opt) => (
                 <label
                   key={opt}
@@ -191,16 +201,28 @@ export default function JarasForm() {
                 </label>
               ))}
             </div>
+            {errors.pengaduanDitujukan && (
+              <p className="text-sm text-destructive mt-1">Wajib dipilih.</p>
+            )}
           </div>
 
-          <div className={`space-y-2 transition-opacity duration-300 ${ditujukan !== "Lainnya" ? "opacity-50" : "opacity-100"}`}>
-            <Label htmlFor="pengaduanLainnya">Sebutkan tujuan lainnya</Label>
-            <Input
-              id="pengaduanLainnya"
-              disabled={ditujukan !== "Lainnya"}
-              placeholder={ditujukan !== "Lainnya" ? "Pilih opsi 'Lainnya' untuk mengisi" : "Tuliskan tujuan pengaduan"}
-              {...register("pengaduanLainnya")}
-            />
+          <div className="space-y-2">
+            <Label htmlFor="departemen">Departemen Terkait</Label>
+            <select
+              id="departemen"
+              {...register("departemen", { required: true })}
+              className="flex h-10 w-full rounded-md border border-black/10 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/50 hover:border-brand-green transition-colors"
+            >
+              <option value="">Pilih Departemen...</option>
+              {DEPARTEMEN_OPTIONS.map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
+            {errors.departemen && (
+              <p className="text-sm text-destructive mt-1">Wajib dipilih.</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -236,6 +258,9 @@ export default function JarasForm() {
               placeholder="Apa solusi yang Anda harapkan?"
               {...register("saranPenyelesaian", { required: true })}
             />
+            {errors.saranPenyelesaian && (
+              <p className="text-sm text-destructive">Wajib diisi.</p>
+            )}
           </div>
 
           <div className="space-y-2">

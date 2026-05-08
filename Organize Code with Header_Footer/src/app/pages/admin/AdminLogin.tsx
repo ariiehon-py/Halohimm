@@ -48,7 +48,7 @@ export default function AdminLogin() {
                 Dashboard Halo, Him!
               </p>
             </div>
-
+ </div>
             <form
               onSubmit={handleLogin}
               className="bg-white border border-black/10 rounded-lg shadow-lg p-6 md:p-8 space-y-6 font-agrandir"
@@ -97,17 +97,6 @@ export default function AdminLogin() {
                 </button>
               </div>
             </form>
-
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-xs text-blue-800 font-agrandir">
-                <strong>Demo credentials:</strong>
-                <br />
-                Username: <code className="bg-blue-100 px-1 rounded">admin</code>
-                <br />
-                Password: <code className="bg-blue-100 px-1 rounded">halohim2026</code>
-              </p>
-            </div>
-          </div>
         </FadeInUp>
       </section>
     </PageTransition>
