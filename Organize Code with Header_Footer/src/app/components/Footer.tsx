@@ -1,3 +1,6 @@
+// 1. Jangan lupa import Link di bagian paling atas file ini ya!
+import { Link } from 'react-router';
+
 export function Footer() {
   return (
     <footer className="w-full bg-[#3a3a3a] text-white mt-auto border-t-4 border-brand-green">
@@ -11,12 +14,14 @@ export function Footer() {
         <p className="text-xs md:text-sm text-white/80 mb-3">
           Kabinet Adyanala - Universitas Airlangga
         </p>
-        <a
-          href="/admin/login"
+        
+        {/* 2. Tag <a> diubah menjadi <Link> dan href diubah menjadi to */}
+        <Link
+          to="/admin/login"
           className="inline-block text-xs text-white/50 hover:text-white/80 transition-colors"
         >
           Admin Login
-        </a>
+        </Link>
       </div>
     </footer>
   );
