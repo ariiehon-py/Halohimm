@@ -10,35 +10,31 @@ export default function Home() {
       <section className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4 md:px-8 overflow-hidden bg-[#F3EFE0]">
         
         {/* ========================================= */}
-        {/* LAPISAN FOTO DRAGGABLE (Dengan Spacing Garis) */}
+        {/* LAPISAN FOTO DRAGGABLE                    */}
         {/* ========================================= */}
         
-        {/* Foto 1 - bg.jpeg */}
         <motion.div
           drag
           className="absolute z-0 cursor-grab active:cursor-grabbing w-[500px] md:w-[700px] p-4 border-2 border-black shadow-2xl bg-[#F3EFE0]"
           style={{ top: '-10%', left: '-5%', rotate: -8 }}
         >
-          {/* Spacing didapat dari p-4 di atas, garis hitam nggak nempel ke foto */}
-          <img src="/bg.jpeg" alt="Foto Hima 1" className="w-full h-auto shadow-sm" />
+          <img src="/bg.jpeg" alt="Foto Hima 1" className="w-full h-auto" />
         </motion.div>
 
-        {/* Foto 2 - bg1.jpeg */}
         <motion.div
           drag
           className="absolute z-0 cursor-grab active:cursor-grabbing w-[450px] md:w-[650px] p-4 border-2 border-black shadow-2xl bg-[#F3EFE0]"
           style={{ top: '20%', right: '-10%', rotate: 10 }}
         >
-          <img src="/bg1.jpeg" alt="Foto Hima 2" className="w-full h-auto shadow-sm" />
+          <img src="/bg1.jpeg" alt="Foto Hima 2" className="w-full h-auto" />
         </motion.div>
 
-        {/* Foto 3 - bg2.jpeg */}
         <motion.div
           drag
           className="absolute z-0 cursor-grab active:cursor-grabbing w-[550px] md:w-[750px] p-4 border-2 border-black shadow-2xl bg-[#F3EFE0]"
           style={{ bottom: '-15%', left: '15%', rotate: -5 }}
         >
-          <img src="/bg2.jpeg" alt="Foto Hima 3" className="w-full h-auto shadow-sm" />
+          <img src="/bg2.jpeg" alt="Foto Hima 3" className="w-full h-auto" />
         </motion.div>
 
 
@@ -49,24 +45,35 @@ export default function Home() {
         <div className="relative z-10 flex flex-col items-center pointer-events-none text-center">
           <motion.button
             onClick={() => navigate("/info")}
-            className="group cursor-pointer pointer-events-auto"
+            className="group cursor-pointer pointer-events-auto relative"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
-            <motion.h1
-              className="font-sturoc text-brand-green text-7xl md:text-9xl lg:text-[140px] drop-shadow-md tracking-wider"
-              animate={{
-                opacity: [1, 0.7, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+            <motion.div
+              className="relative inline-block"
+              animate={{ opacity: [1, 0.8, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
-              HALO, HIM!
-            </motion.h1>
+              {/* TEKS 1 (LAPISAN BELAKANG): Stroke Warna Background + Shadow */}
+              <h1
+                className="font-sturoc text-8xl md:text-9xl lg:text-[180px] tracking-wider"
+                style={{
+                  color: '#F3EFE0', // Warna sama dengan background
+                  WebkitTextStroke: '12px #F3EFE0', // Stroke tebal warna krem
+                  textShadow: '4px 4px 0px rgba(13, 65, 37, 0.4)', 
+                }}
+              >
+                HALO, HIM!
+              </h1>
+
+              {/* TEKS 2 (LAPISAN DEPAN): Gradient Fill (Hijau Tua ke Hijau Segar) */}
+              <h1
+                className="font-sturoc text-8xl md:text-9xl lg:text-[180px] tracking-wider absolute top-0 left-0 bg-gradient-to-b from-[#1A7A44] to-[#2EBD6E] bg-clip-text text-transparent"
+              >
+                HALO, HIM!
+              </h1>
+            </motion.div>
           </motion.button>
 
           <FadeInUp delay={0.2}>
@@ -78,7 +85,7 @@ export default function Home() {
 
           <FadeInUp delay={0.4}>
             <motion.p
-              className="font-agrandir text-brand-blue/60 mt-4 text-sm"
+              className="font-agrandir text-brand-blue/60 mt-4 text-sm font-bold"
               animate={{ opacity: [0.6, 1, 0.6] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >

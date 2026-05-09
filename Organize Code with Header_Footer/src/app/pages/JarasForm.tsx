@@ -183,24 +183,21 @@ export default function JarasForm() {
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white border border-black/10 rounded-lg shadow-sm p-6 md:p-8 space-y-6 font-agrandir"
         >
+          {/* INI BAGIAN YANG DIUBAH JADI DROPDOWN */}
           <div className="space-y-2">
-            <Label>Pengaduan Ditujukan Kepada</Label>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
+            <Label htmlFor="pengaduanDitujukan">Pengaduan Ditujukan Kepada</Label>
+            <select
+              id="pengaduanDitujukan"
+              {...register("pengaduanDitujukan", { required: true })}
+              className="flex h-10 w-full rounded-md border border-black/10 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/50 hover:border-brand-green transition-colors"
+            >
+              <option value="">Pilih Tujuan Pengaduan...</option>
               {TARGET_OPTIONS.map((opt) => (
-                <label
-                  key={opt}
-                  className="flex items-center gap-3 cursor-pointer text-sm border border-black/10 rounded-md px-3 py-2 hover:border-brand-green"
-                >
-                  <input
-                    type="radio"
-                    value={opt}
-                    {...register("pengaduanDitujukan", { required: true })}
-                    className="accent-brand-green"
-                  />
-                  <span>{opt}</span>
-                </label>
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
               ))}
-            </div>
+            </select>
             {errors.pengaduanDitujukan && (
               <p className="text-sm text-destructive mt-1">Wajib dipilih.</p>
             )}

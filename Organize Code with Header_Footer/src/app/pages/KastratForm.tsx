@@ -196,23 +196,19 @@ export default function KastratForm() {
           </div>
 
           <div className="space-y-2">
-            <Label>Kategori</Label>
-            <div className="grid sm:grid-cols-2 gap-2">
+            <Label htmlFor="kategori">Kategori</Label>
+            <select
+              id="kategori"
+              {...register("kategori", { required: true })}
+              className="flex h-10 w-full rounded-md border border-black/10 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/50 hover:border-brand-green transition-colors"
+            >
+              <option value="">Pilih Kategori...</option>
               {KATEGORI_OPTIONS.map((opt) => (
-                <label
-                  key={opt}
-                  className="flex items-center gap-3 cursor-pointer text-sm border border-black/10 rounded-md px-3 py-2 hover:border-brand-green"
-                >
-                  <input
-                    type="radio"
-                    value={opt}
-                    {...register("kategori", { required: true })}
-                    className="accent-brand-green"
-                  />
-                  <span>{opt}</span>
-                </label>
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
               ))}
-            </div>
+            </select>
             {errors.kategori && (
               <p className="text-sm text-destructive">Wajib dipilih.</p>
             )}

@@ -24,9 +24,7 @@ export default function JarasInfo() {
           {/* Kotak deskripsi dilebarkan agar tidak terlihat gendut ke bawah */}
           <div className="bg-gradient-to-b from-brand-green-start to-brand-green-end p-5 md:p-6 border-4 border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] mb-12">
             <p className="font-agrandir text-white text-base md:text-lg text-justify md:text-center leading-relaxed">
-              Form Pengaduan merupakan wadah penyampaian pengaduan terkait kinerja
-              baik secara personal fungsionaris maupun program kerja HIMA D4 K3
-              Universitas Airlangga.
+              Form Pengaduan Mahasiswa D4 - Keselamatan dan Kesehatan Kerja merupakan wadah penyampaian pengaduan, kritik, dan masukan baik terkait kinerja personal fungsionaris maupun pelaksanaan program kerja HIMA D4-K3 UNAIR. Form Pengaduan ini diharapkan dapat menciptakan ruang komunikasi yang terbuka dan keterlibatan seluruh warga Program Studi D4 Keselamatan dan Kesehatan Kerja dalam mengembangkan dan mengevaluasi kinerja HIMA D4-K3 UNAIR secara komperhensif.
             </p>
           </div>
         </FadeInUp>
