@@ -129,16 +129,16 @@ export default function JarasForm() {
 
       // 3. KIRIM NOTIFIKASI KE TELEGRAM
       const pesanTele = `
-🚨 *PENGADUAN JARAS BARU!*
+🚨 *PENGADUAN BARU!*
 ----------------------------
-👤 *Nama Pengadu:* ${identity.nama}
-🎓 *Angkatan:* ${identity.angkatan}
-🎯 *Ditujukan Ke:* ${data.pengaduanDitujukan}
-🏢 *Departemen:* ${data.departemen}
-👤 *Pihak Teradu:* ${data.identitasYangDiadu}
-📝 *Isi Pengaduan:* ${data.jelaskanPengaduan}
-💡 *Saran Solusi:* ${data.saranPenyelesaian}
-🖼️ *Bukti Lampiran:* ${publicUrl || 'Tidak ada bukti'}
+*Nama Pengadu:* ${identity.nama}
+*Angkatan:* ${identity.angkatan}
+*Ditujukan Ke:* ${data.pengaduanDitujukan}
+*Departemen:* ${data.departemen}
+*Pihak Teradu:* ${data.identitasYangDiadu}
+*Isi Pengaduan:* ${data.jelaskanPengaduan}
+*Saran Solusi:* ${data.saranPenyelesaian}
+*Bukti Lampiran:* ${publicUrl || 'Tidak ada bukti'}
       `;
       await sendToTelegram(pesanTele);
 
@@ -164,7 +164,7 @@ export default function JarasForm() {
 
         <div className="mb-8">
           <h1 className="font-sturoc text-brand-blue text-3xl md:text-5xl tracking-widest uppercase">
-            Form Jaras
+            Form Pengaduan
           </h1>
           <p className="font-agrandir text-brand-blue/70 mt-2">
             Laporkan kendala kinerja atau program kerja demi kemajuan bersama.

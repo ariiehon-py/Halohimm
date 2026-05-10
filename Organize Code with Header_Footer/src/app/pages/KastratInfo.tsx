@@ -15,7 +15,7 @@ export default function KastratInfo() {
           </FadeInUp>
           <FadeInUp delay={0.2}>
             <h2 className="font-sturoc text-brand-blue text-3xl md:text-5xl text-center mt-2 tracking-widest">
-              KASTRAT
+              JARAS
             </h2>
           </FadeInUp>
         </div>
@@ -24,7 +24,7 @@ export default function KastratInfo() {
           {/* Kotak deskripsi dilebarkan agar tidak terlihat gendut ke bawah */}
           <div className="bg-gradient-to-b from-brand-green-start to-brand-green-end p-5 md:p-6 border-4 border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] mb-12">
             <p className="font-agrandir text-white text-base md:text-lg text-justify md:text-center leading-relaxed">
-              Form Pengaduan merupakan wadah penyampaian pengaduan terkait kinerja baik secara personal fungsionaris maupun program kerja HIMA D4 K3 Universitas Airlangga.
+              Form Aspirasi Mahasiswa D4 - Keselamatan dan Kesehatan Kerja Fakultas Vokasi Universitas Airlangga ini ditujukan sebagai wadah bagi seluruh mahasiswa Program Studi D4 - K3 UNAIR. Dengan adanya aspirasi ini, diharapkan dapat tercipta komunikasi yang terbuka serta mendorong terciptanya lingkungan akademik yang lebih kondusif terhadap kebutuhan mahasiswa K3.
             </p>
           </div>
         </FadeInUp>

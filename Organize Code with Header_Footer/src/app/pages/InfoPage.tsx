@@ -49,7 +49,7 @@ export default function InfoPage() {
                 whileTap={{ scale: 0.99 }}
               >
                 <span className="font-sturoc text-white text-3xl md:text-4xl tracking-widest">
-                  KASTRAT
+                  JARAS
                 </span>
                 <p className="font-agrandir text-white/80 mt-2 text-sm text-center">
                   Form aspirasi mahasiswa D4 K3
@@ -65,7 +65,7 @@ export default function InfoPage() {
                 whileTap={{ scale: 0.99 }}
               >
                 <span className="font-sturoc text-white text-3xl md:text-4xl tracking-widest">
-                  JARAS
+                  PENGADUAN
                 </span>
                 <p className="font-agrandir text-white/80 mt-2 text-sm text-center">
                   Form pengaduan kinerja fungsionaris & program kerja

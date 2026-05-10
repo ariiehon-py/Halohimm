@@ -130,15 +130,15 @@ export default function KastratForm() {
 
       // 3. KIRIM NOTIF KE TELEGRAM
       const pesanTele = `
-🚀 *ASPIRASI KASTRAT BARU!*
+*ASPIRASI JARAS BARU!*
 ----------------------------
-👤 *Nama:* ${identity.nama}
-🎓 *Angkatan:* ${identity.angkatan}
-🎯 *Ditujukan:* ${data.ditujukanKepada}
-📂 *Kategori:* ${data.kategori}
-📝 *Pesan:* ${data.pesanAspirasi}
-⚠️ *Urgensi:* ${data.tingkatUrgensi}
-🖼️ *Bukti:* ${publicUrl || 'Tidak ada'}
+*Nama:* ${identity.nama}
+*Angkatan:* ${identity.angkatan}
+*Ditujukan:* ${data.ditujukanKepada}
+*Kategori:* ${data.kategori}
+*Pesan:* ${data.pesanAspirasi}
+*Urgensi:* ${data.tingkatUrgensi}
+*Bukti:* ${publicUrl || 'Tidak ada'}
       `;
       await sendToTelegram(pesanTele);
 
@@ -164,7 +164,7 @@ export default function KastratForm() {
 
         <div className="mb-8">
           <h1 className="font-sturoc text-brand-blue text-3xl md:text-5xl tracking-widest">
-            FORM KASTRAT
+            FORM JARAS
           </h1>
           <p className="font-agrandir text-brand-blue/70 mt-2">
             Sampaikan aspirasi Anda untuk lingkungan akademik yang lebih baik.

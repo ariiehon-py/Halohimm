@@ -1,40 +1,66 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { PageTransition, FadeInUp } from "../components/PageTransition";
 
 export default function Home() {
   const navigate = useNavigate();
+  // State untuk kontrol munculnya tag Instagram
+  const [showTags, setShowTags] = useState(false);
+
+  const toggleTags = () => setShowTags(!showTags);
 
   return (
     <PageTransition>
       <section className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4 md:px-8 overflow-hidden bg-[#F3EFE0]">
         
         {/* ========================================= */}
-        {/* LAPISAN FOTO DRAGGABLE                    */}
+        {/* LAPISAN FOTO DRAGGABLE (Dengan IG Tags)   */}
         {/* ========================================= */}
         
+        {/* Foto 1 */}
         <motion.div
           drag
-          className="absolute z-0 cursor-grab active:cursor-grabbing w-[500px] md:w-[700px] p-4 border-2 border-black shadow-2xl bg-[#F3EFE0]"
-          style={{ top: '-10%', left: '-5%', rotate: -8 }}
+          onClick={toggleTags}
+          initial={{ rotate: -8 }}
+          animate={{ rotate: [-8, -5, -10, -8], y: [0, -5, 5, 0] }} 
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute z-0 cursor-pointer p-2 md:p-4 border-2 border-black shadow-2xl bg-[#F3EFE0] 
+                     w-[280px] -top-[5%] -left-[25%] 
+                     md:w-[700px] md:-top-[10%] md:-left-[5%]"
         >
           <img src="/bg.jpeg" alt="Foto Hima 1" className="w-full h-auto" />
+          <InstagramTag show={showTags} />
         </motion.div>
 
+        {/* Foto 2 */}
         <motion.div
           drag
-          className="absolute z-0 cursor-grab active:cursor-grabbing w-[450px] md:w-[650px] p-4 border-2 border-black shadow-2xl bg-[#F3EFE0]"
-          style={{ top: '20%', right: '-10%', rotate: 10 }}
+          onClick={toggleTags}
+          initial={{ rotate: 10 }}
+          animate={{ rotate: [10, 13, 7, 10], y: [0, 5, -5, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute z-0 cursor-pointer p-2 md:p-4 border-2 border-black shadow-2xl bg-[#F3EFE0] 
+                     w-[250px] top-[25%] -right-[35%] 
+                     md:w-[650px] md:top-[20%] md:-right-[10%]"
         >
           <img src="/bg1.jpeg" alt="Foto Hima 2" className="w-full h-auto" />
+          <InstagramTag show={showTags} />
         </motion.div>
 
+        {/* Foto 3 */}
         <motion.div
           drag
-          className="absolute z-0 cursor-grab active:cursor-grabbing w-[550px] md:w-[750px] p-4 border-2 border-black shadow-2xl bg-[#F3EFE0]"
-          style={{ bottom: '-15%', left: '15%', rotate: -5 }}
+          onClick={toggleTags}
+          initial={{ rotate: -5 }}
+          animate={{ rotate: [-5, -2, -8, -5], x: [0, 5, -5, 0] }}
+          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          className="absolute z-0 cursor-pointer p-2 md:p-4 border-2 border-black shadow-2xl bg-[#F3EFE0] 
+                     w-[300px] -bottom-[10%] -right-[20%] 
+                     md:w-[750px] md:-bottom-[15%] md:left-[15%]"
         >
           <img src="/bg2.jpeg" alt="Foto Hima 3" className="w-full h-auto" />
+          <InstagramTag show={showTags} />
         </motion.div>
 
 
@@ -55,21 +81,19 @@ export default function Home() {
               animate={{ opacity: [1, 0.8, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
-              {/* TEKS 1 (LAPISAN BELAKANG): Stroke Warna Background + Shadow */}
               <h1
-                className="font-sturoc text-8xl md:text-9xl lg:text-[180px] tracking-wider"
+                className="font-sturoc text-6xl sm:text-8xl md:text-9xl lg:text-[180px] tracking-wider"
                 style={{
-                  color: '#F3EFE0', // Warna sama dengan background
-                  WebkitTextStroke: '12px #F3EFE0', // Stroke tebal warna krem
+                  color: '#F3EFE0', 
+                  WebkitTextStroke: '12px #F3EFE0', 
                   textShadow: '4px 4px 0px rgba(13, 65, 37, 0.4)', 
                 }}
               >
                 HALO, HIM!
               </h1>
 
-              {/* TEKS 2 (LAPISAN DEPAN): Gradient Fill (Hijau Tua ke Hijau Segar) */}
               <h1
-                className="font-sturoc text-8xl md:text-9xl lg:text-[180px] tracking-wider absolute top-0 left-0 bg-gradient-to-b from-[#1A7A44] to-[#2EBD6E] bg-clip-text text-transparent"
+                className="font-sturoc text-6xl sm:text-8xl md:text-9xl lg:text-[180px] tracking-wider absolute top-0 left-0 w-full bg-gradient-to-b from-[#1A7A44] to-[#2EBD6E] bg-clip-text text-transparent"
               >
                 HALO, HIM!
               </h1>
@@ -77,15 +101,21 @@ export default function Home() {
           </motion.button>
 
           <FadeInUp delay={0.2}>
-            <p className="font-agrandir text-brand-blue/80 mt-6 max-w-xl">
-              Wadah komunikasi, pengaduan, dan penyaluran aspirasi mahasiswa
-              D4 Keselamatan dan Kesehatan Kerja, Universitas Airlangga.
-            </p>
+            {/* Highlight dengan w-fit agar ngepas dengan tulisan */}
+            <div className="mt-8 flex flex-col items-center gap-1 md:gap-2 pointer-events-auto">
+              <span className="bg-[#1A7A44]/100 text-white font-agrandir text-sm md:text-lg px-3 py-1 shadow-sm w-fit">
+                Wadah komunikasi, pengaduan, dan penyaluran aspirasi mahasiswa
+              </span>
+              <span className="bg-[#1A7A44]/100 text-white font-agrandir text-sm md:text-lg px-3 py-1 shadow-sm w-fit">
+                D4 Keselamatan dan Kesehatan Kerja, Universitas Airlangga.
+              </span>
+            </div>
           </FadeInUp>
 
           <FadeInUp delay={0.4}>
             <motion.p
-              className="font-agrandir text-brand-blue/60 mt-4 text-sm font-bold"
+              onClick={() => navigate("/info")}
+              className="font-agrandir text-[#1A7A44] mt-8 text-sm font-bold cursor-pointer pointer-events-auto"
               animate={{ opacity: [0.6, 1, 0.6] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
@@ -96,5 +126,33 @@ export default function Home() {
         
       </section>
     </PageTransition>
+  );
+}
+
+// Komponen Kecil untuk Tag Instagram
+function InstagramTag({ show }: { show: boolean }) {
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.a
+          href="https://instagram.com/himak3unair"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: 10 }}
+          className="absolute bottom-10 left-10 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-md text-xs font-agrandir border border-white/20 pointer-events-auto shadow-xl"
+          onClick={(e) => e.stopPropagation()} // Supaya tidak men-trigger toggleTags lagi
+        >
+          {/* Ikon Instagram Sederhana */}
+          <div className="w-4 h-4 border-2 border-white rounded-sm flex items-center justify-center relative">
+            <div className="w-1.5 h-1.5 border border-white rounded-full"></div>
+          </div>
+          <span>@himak3unair</span>
+          {/* Segitiga panah bawah ala IG Tag */}
+          <div className="absolute -bottom-1.5 left-4 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-black/80"></div>
+        </motion.a>
+      )}
+    </AnimatePresence>
   );
 }
