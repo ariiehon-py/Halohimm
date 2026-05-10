@@ -15,10 +15,10 @@ export default function Home() {
       <section className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4 md:px-8 overflow-hidden bg-[#F3EFE0]">
         
         {/* ========================================= */}
-        {/* LAPISAN FOTO DRAGGABLE (Dengan IG Tags)   */}
+        {/* LAPISAN FOTO DRAGGABLE (Posisi Mobile Fix)*/}
         {/* ========================================= */}
         
-        {/* Foto 1 */}
+        {/* Foto 1 - Kiri Atas */}
         <motion.div
           drag
           onClick={toggleTags}
@@ -26,14 +26,14 @@ export default function Home() {
           animate={{ rotate: [-8, -5, -10, -8], y: [0, -5, 5, 0] }} 
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           className="absolute z-0 cursor-pointer p-2 md:p-4 border-2 border-black shadow-2xl bg-[#F3EFE0] 
-                     w-[280px] -top-[5%] -left-[25%] 
+                     w-[260px] top-[5%] -left-[10%] 
                      md:w-[700px] md:-top-[10%] md:-left-[5%]"
         >
           <img src="/bg.jpeg" alt="Foto Hima 1" className="w-full h-auto" />
           <InstagramTag show={showTags} />
         </motion.div>
 
-        {/* Foto 2 */}
+        {/* Foto 2 - Kanan Tengah */}
         <motion.div
           drag
           onClick={toggleTags}
@@ -41,14 +41,14 @@ export default function Home() {
           animate={{ rotate: [10, 13, 7, 10], y: [0, 5, -5, 0] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           className="absolute z-0 cursor-pointer p-2 md:p-4 border-2 border-black shadow-2xl bg-[#F3EFE0] 
-                     w-[250px] top-[25%] -right-[35%] 
+                     w-[280px] top-[40%] -right-[15%] 
                      md:w-[650px] md:top-[20%] md:-right-[10%]"
         >
           <img src="/bg1.jpeg" alt="Foto Hima 2" className="w-full h-auto" />
           <InstagramTag show={showTags} />
         </motion.div>
 
-        {/* Foto 3 */}
+        {/* Foto 3 - Bawah Kiri/Tengah */}
         <motion.div
           drag
           onClick={toggleTags}
@@ -56,7 +56,7 @@ export default function Home() {
           animate={{ rotate: [-5, -2, -8, -5], x: [0, 5, -5, 0] }}
           transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
           className="absolute z-0 cursor-pointer p-2 md:p-4 border-2 border-black shadow-2xl bg-[#F3EFE0] 
-                     w-[300px] -bottom-[10%] -right-[20%] 
+                     w-[320px] bottom-[2%] left-[5%] 
                      md:w-[750px] md:-bottom-[15%] md:left-[15%]"
         >
           <img src="/bg2.jpeg" alt="Foto Hima 3" className="w-full h-auto" />
@@ -68,7 +68,8 @@ export default function Home() {
         {/* LAPISAN KONTEN TEKS                       */}
         {/* ========================================= */}
         
-        <div className="relative z-10 flex flex-col items-center pointer-events-none text-center">
+        {/* mt-[-5vh] di mobile biar teksnya agak naik, ngasih space buat foto bawah */}
+        <div className="relative z-10 flex flex-col items-center pointer-events-none text-center mt-[-5vh] md:mt-0">
           <motion.button
             onClick={() => navigate("/info")}
             className="group cursor-pointer pointer-events-auto relative"
@@ -82,10 +83,12 @@ export default function Home() {
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
               <h1
-                className="font-sturoc text-6xl sm:text-8xl md:text-9xl lg:text-[180px] tracking-wider"
+                // Ukuran teks menyesuaikan layar: HP (text-5xl), Tablet (7xl), Laptop (180px)
+                className="font-sturoc text-5xl sm:text-7xl md:text-9xl lg:text-[180px] tracking-wider"
                 style={{
                   color: '#F3EFE0', 
-                  WebkitTextStroke: '12px #F3EFE0', 
+                  // Stroke pakai "em" biar ketebalannya menyesuaikan ukuran font secara otomatis
+                  WebkitTextStroke: '0.08em #F3EFE0', 
                   textShadow: '4px 4px 0px rgba(13, 65, 37, 0.4)', 
                 }}
               >
@@ -93,7 +96,7 @@ export default function Home() {
               </h1>
 
               <h1
-                className="font-sturoc text-6xl sm:text-8xl md:text-9xl lg:text-[180px] tracking-wider absolute top-0 left-0 w-full bg-gradient-to-b from-[#1A7A44] to-[#2EBD6E] bg-clip-text text-transparent"
+                className="font-sturoc text-5xl sm:text-7xl md:text-9xl lg:text-[180px] tracking-wider absolute top-0 left-0 w-full bg-gradient-to-b from-[#1A7A44] to-[#2EBD6E] bg-clip-text text-transparent"
               >
                 HALO, HIM!
               </h1>
@@ -101,13 +104,10 @@ export default function Home() {
           </motion.button>
 
           <FadeInUp delay={0.2}>
-            {/* Highlight dengan w-fit agar ngepas dengan tulisan */}
-            <div className="mt-8 flex flex-col items-center gap-1 md:gap-2 pointer-events-auto">
-              <span className="bg-[#1A7A44]/100 text-white font-agrandir text-sm md:text-lg px-3 py-1 shadow-sm w-fit">
-                Wadah komunikasi, pengaduan, dan penyaluran aspirasi mahasiswa
-              </span>
-              <span className="bg-[#1A7A44]/100 text-white font-agrandir text-sm md:text-lg px-3 py-1 shadow-sm w-fit">
-                D4 Keselamatan dan Kesehatan Kerja, Universitas Airlangga.
+            {/* Highlight Satu Baris Penuh dengan box-decoration-clone agar rapi pas turun baris */}
+            <div className="mt-8 max-w-4xl px-2 pointer-events-auto leading-loose md:leading-[3]">
+              <span className="bg-[#1A7A44]/50 text-white font-agrandir text-sm md:text-lg px-3 py-1.5 shadow-sm box-decoration-clone">
+                Wadah komunikasi, pengaduan, dan penyaluran aspirasi mahasiswa D4 Keselamatan dan Kesehatan Kerja, Universitas Airlangga.
               </span>
             </div>
           </FadeInUp>

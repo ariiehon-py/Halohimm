@@ -51,7 +51,7 @@ export function Header() {
                 : "text-brand-blue hover:text-brand-green"
             }`}
           >
-            Kastrat
+            Jaras
           </Link>
           <Link
             to="/jaras"
@@ -61,7 +61,7 @@ export function Header() {
                 : "text-brand-blue hover:text-brand-green"
             }`}
           >
-            Jaras
+            Pengaduan
           </Link>
         </nav>
       </div>
