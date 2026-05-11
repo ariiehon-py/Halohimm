@@ -43,7 +43,7 @@ export default function KastratForm() {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<KastratFormData>({
-    defaultValues: { kendalaPembelajaran: "Tidak" },
+    defaultValues: { kendalaPembelajaran: "Tidak", kategori: "" },
   });
   const [submitted, setSubmitted] = useState(false);
   const [identity, setIdentity] = useState({ nama: "", angkatan: "" });
@@ -72,7 +72,7 @@ export default function KastratForm() {
         body: JSON.stringify({
           chat_id: chatId,
           text: message,
-          parse_mode: "Markdown",
+          parse_mode: "HTML", // <-- UBAH KE HTML BIAR ANTI ERROR
         }),
       });
     } catch (err) {
@@ -128,17 +128,20 @@ export default function KastratForm() {
 
       if (error) throw error;
 
-      // 3. KIRIM NOTIF KE TELEGRAM
+      // 3. KIRIM NOTIF KE TELEGRAM (PAKAI TAG HTML <b>)
       const pesanTele = `
-*ASPIRASI JARAS BARU!*
+🚨 <b>ASPIRASI KASTRAT BARU!</b>
 ----------------------------
-*Nama:* ${identity.nama}
-*Angkatan:* ${identity.angkatan}
-*Ditujukan:* ${data.ditujukanKepada}
-*Kategori:* ${data.kategori}
-*Pesan:* ${data.pesanAspirasi}
-*Urgensi:* ${data.tingkatUrgensi}
-*Bukti:* ${publicUrl || 'Tidak ada'}
+<b>Nama:</b> ${identity.nama}
+<b>Angkatan:</b> ${identity.angkatan}
+<b>Ditujukan:</b> ${data.ditujukanKepada}
+<b>Kategori:</b> ${data.kategori}
+
+<b>Pesan:</b> 
+${data.pesanAspirasi}
+
+<b>Urgensi:</b> ${data.tingkatUrgensi}
+<b>Bukti:</b> ${publicUrl || 'Tidak ada bukti'}
       `;
       await sendToTelegram(pesanTele);
 
@@ -164,7 +167,7 @@ export default function KastratForm() {
 
         <div className="mb-8">
           <h1 className="font-sturoc text-brand-blue text-3xl md:text-5xl tracking-widest">
-            FORM JARAS
+            FORM KASTRAT
           </h1>
           <p className="font-agrandir text-brand-blue/70 mt-2">
             Sampaikan aspirasi Anda untuk lingkungan akademik yang lebih baik.
@@ -202,7 +205,8 @@ export default function KastratForm() {
               {...register("kategori", { required: true })}
               className="flex h-10 w-full rounded-md border border-black/10 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/50 hover:border-brand-green transition-colors"
             >
-              <option value="">Pilih Kategori...</option>
+              {/* Tambah disabled hidden di sini */}
+              <option value="" disabled hidden>Pilih Kategori...</option>
               {KATEGORI_OPTIONS.map((opt) => (
                 <option key={opt} value={opt}>
                   {opt}
@@ -210,7 +214,7 @@ export default function KastratForm() {
               ))}
             </select>
             {errors.kategori && (
-              <p className="text-sm text-destructive">Wajib dipilih.</p>
+              <p className="text-sm text-destructive mt-1">Wajib dipilih.</p>
             )}
           </div>
 

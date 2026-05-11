@@ -15,7 +15,7 @@ import { supabase } from "../../lib/supabase";
 
 type JarasFormData = {
   pengaduanDitujukan: string;
-  departemen: string;
+  departemen?: string; // Dibuat opsional karena bisa disembunyikan
   identitasYangDiadu: string;
   jelaskanPengaduan: string;
   saranPenyelesaian: string;
@@ -48,11 +48,22 @@ export default function JarasForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
-  } = useForm<JarasFormData>();
+  } = useForm<JarasFormData>({
+    defaultValues: {
+      pengaduanDitujukan: "",
+      departemen: ""
+    }
+  });
   
   const [submitted, setSubmitted] = useState(false);
   const [identity, setIdentity] = useState({ nama: "", angkatan: "" });
+
+  // Pantau pilihan tujuan pengaduan
+  const tujuan = watch("pengaduanDitujukan");
+  // Cek apakah kolom departemen harus ditampilkan (Sembunyikan jika Kahim/Wakahim)
+  const showDepartemen = tujuan && tujuan !== "Ketua Himpunan" && tujuan !== "Wakil Ketua Himpunan";
 
   useEffect(() => {
     const storedIdentity = sessionStorage.getItem("jaras_identity");
@@ -63,7 +74,7 @@ export default function JarasForm() {
     }
   }, [navigate]);
 
-  const sendToTelegram = async (message: string) => {
+const sendToTelegram = async (message: string) => {
     const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
     const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
     const url = `https://api.telegram.org/bot${token}/sendMessage`;
@@ -75,14 +86,13 @@ export default function JarasForm() {
         body: JSON.stringify({
           chat_id: chatId,
           text: message,
-          parse_mode: "Markdown",
+          parse_mode: "HTML", // <-- UBAH BAGIAN INI JADI HTML
         }),
       });
     } catch (err) {
       console.error("Telegram error:", err);
     }
   };
-
   const onSubmit = async (data: JarasFormData) => {
     const toastId = toast.loading("Sedang mengirim pengaduan...");
     
@@ -109,6 +119,9 @@ export default function JarasForm() {
         publicUrl = urlData.publicUrl;
       }
 
+      // Pastikan departemen diisi "-" kalau disembunyikan (biar db rapi)
+      const finalDepartemen = showDepartemen ? data.departemen : "-";
+
       // 2. INSERT DATA KE TABEL JARAS
       const { error } = await supabase
         .from('jaras')
@@ -117,7 +130,7 @@ export default function JarasForm() {
             nama: identity.nama,
             angkatan: identity.angkatan,
             pengaduan_ditujukan: data.pengaduanDitujukan,
-            departemen: data.departemen,
+            departemen: finalDepartemen,
             identitas_yang_diadu: data.identitasYangDiadu,
             jelaskan_pengaduan: data.jelaskanPengaduan,
             saran_penyelesaian: data.saranPenyelesaian,
@@ -128,20 +141,25 @@ export default function JarasForm() {
       if (error) throw error;
 
       // 3. KIRIM NOTIFIKASI KE TELEGRAM
+// 3. KIRIM NOTIFIKASI KE TELEGRAM (Versi HTML)
       const pesanTele = `
-🚨 *PENGADUAN BARU!*
+🚨 <b>PENGADUAN BARU!</b>
 ----------------------------
-*Nama Pengadu:* ${identity.nama}
-*Angkatan:* ${identity.angkatan}
-*Ditujukan Ke:* ${data.pengaduanDitujukan}
-*Departemen:* ${data.departemen}
-*Pihak Teradu:* ${data.identitasYangDiadu}
-*Isi Pengaduan:* ${data.jelaskanPengaduan}
-*Saran Solusi:* ${data.saranPenyelesaian}
-*Bukti Lampiran:* ${publicUrl || 'Tidak ada bukti'}
+<b>Nama Pengadu:</b> ${identity.nama}
+<b>Angkatan:</b> ${identity.angkatan}
+<b>Ditujukan Ke:</b> ${data.pengaduanDitujukan}
+<b>Departemen:</b> ${finalDepartemen}
+<b>Pihak Teradu:</b> ${data.identitasYangDiadu}
+
+<b>Isi Pengaduan:</b> 
+${data.jelaskanPengaduan}
+
+<b>Saran Solusi:</b> 
+${data.saranPenyelesaian}
+
+<b>Bukti Lampiran:</b> ${publicUrl || 'Tidak ada bukti'}
       `;
       await sendToTelegram(pesanTele);
-
       toast.success("Pengaduan berhasil dikirim ke Database & Telegram!", { id: toastId });
       setSubmitted(true);
       sessionStorage.removeItem("jaras_identity");
@@ -183,7 +201,7 @@ export default function JarasForm() {
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white border border-black/10 rounded-lg shadow-sm p-6 md:p-8 space-y-6 font-agrandir"
         >
-          {/* INI BAGIAN YANG DIUBAH JADI DROPDOWN */}
+          {/* KOLOM TUJUAN PENGADUAN */}
           <div className="space-y-2">
             <Label htmlFor="pengaduanDitujukan">Pengaduan Ditujukan Kepada</Label>
             <select
@@ -191,7 +209,7 @@ export default function JarasForm() {
               {...register("pengaduanDitujukan", { required: true })}
               className="flex h-10 w-full rounded-md border border-black/10 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/50 hover:border-brand-green transition-colors"
             >
-              <option value="">Pilih Tujuan Pengaduan...</option>
+              <option value="" disabled hidden>Pilih Tujuan Pengaduan...</option>
               {TARGET_OPTIONS.map((opt) => (
                 <option key={opt} value={opt}>
                   {opt}
@@ -203,24 +221,36 @@ export default function JarasForm() {
             )}
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="departemen">Departemen Terkait</Label>
-            <select
-              id="departemen"
-              {...register("departemen", { required: true })}
-              className="flex h-10 w-full rounded-md border border-black/10 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/50 hover:border-brand-green transition-colors"
-            >
-              <option value="">Pilih Departemen...</option>
-              {DEPARTEMEN_OPTIONS.map((dept) => (
-                <option key={dept} value={dept}>
-                  {dept}
-                </option>
-              ))}
-            </select>
-            {errors.departemen && (
-              <p className="text-sm text-destructive mt-1">Wajib dipilih.</p>
-            )}
-          </div>
+          {/* KOLOM DEPARTEMEN (Muncul bersyarat) */}
+          {showDepartemen && (
+            <FadeInUp>
+              <div className="space-y-2">
+                <Label htmlFor="departemen">Departemen Terkait</Label>
+                <select
+                  id="departemen"
+                  {...register("departemen", { required: true })}
+                  className="flex h-10 w-full rounded-md border border-black/10 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/50 hover:border-brand-green transition-colors"
+                >
+                  <option value="" disabled hidden>Pilih Departemen...</option>
+                  
+                  {/* Kalau milih DPH, munculin Koordinator */}
+                  {tujuan === "Dewan Pengawas Himpunan" && (
+                    <option value="Koordinator" className="font-bold text-brand-green">Koordinator</option>
+                  )}
+
+                  {/* List Departemen Normal */}
+                  {DEPARTEMEN_OPTIONS.map((dept) => (
+                    <option key={dept} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
+                </select>
+                {errors.departemen && (
+                  <p className="text-sm text-destructive mt-1">Wajib dipilih.</p>
+                )}
+              </div>
+            </FadeInUp>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="identitasYangDiadu">Identitas yang Diadu</Label>
