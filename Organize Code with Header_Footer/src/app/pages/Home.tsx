@@ -68,26 +68,24 @@ export default function Home() {
         {/* LAPISAN KONTEN TEKS                       */}
         {/* ========================================= */}
         
-        {/* mt-[-5vh] di mobile biar teksnya agak naik, ngasih space buat foto bawah */}
-        <div className="relative z-10 flex flex-col items-center pointer-events-none text-center mt-[-5vh] md:mt-0">
+        <div className="relative z-10 flex flex-col items-center justify-center w-full pointer-events-none text-center mt-[-5vh] md:mt-0 px-2">
           <motion.button
             onClick={() => navigate("/info")}
-            className="group cursor-pointer pointer-events-auto relative"
+            className="group cursor-pointer pointer-events-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
             <motion.div
-              className="relative inline-block"
+              className="grid place-items-center"
               animate={{ opacity: [1, 0.8, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
+              {/* TEKS BELAKANG (Ditambah leading-none) */}
               <h1
-                // Ukuran teks menyesuaikan layar: HP (text-5xl), Tablet (7xl), Laptop (180px)
-                className="font-sturoc text-5xl sm:text-7xl md:text-9xl lg:text-[180px] tracking-wider"
+                className="col-start-1 row-start-1 font-sturoc leading-none whitespace-nowrap text-[18vw] sm:text-[120px] md:text-[150px] lg:text-[180px] tracking-wider"
                 style={{
                   color: '#F3EFE0', 
-                  // Stroke pakai "em" biar ketebalannya menyesuaikan ukuran font secara otomatis
                   WebkitTextStroke: '0.08em #F3EFE0', 
                   textShadow: '4px 4px 0px rgba(13, 65, 37, 0.4)', 
                 }}
@@ -95,8 +93,9 @@ export default function Home() {
                 HALO, HIM!
               </h1>
 
+              {/* TEKS DEPAN (Ditambah leading-none) */}
               <h1
-                className="font-sturoc text-5xl sm:text-7xl md:text-9xl lg:text-[180px] tracking-wider absolute top-0 left-0 w-full bg-gradient-to-b from-[#1A7A44] to-[#2EBD6E] bg-clip-text text-transparent"
+                className="col-start-1 row-start-1 font-sturoc leading-none whitespace-nowrap text-[18vw] sm:text-[120px] md:text-[150px] lg:text-[180px] tracking-wider bg-gradient-to-b from-[#1A7A44] to-[#2EBD6E] bg-clip-text text-transparent"
               >
                 HALO, HIM!
               </h1>
@@ -104,8 +103,8 @@ export default function Home() {
           </motion.button>
 
           <FadeInUp delay={0.2}>
-            {/* Highlight Satu Baris Penuh dengan box-decoration-clone agar rapi pas turun baris */}
-            <div className="mt-8 max-w-4xl px-2 pointer-events-auto leading-loose md:leading-[3]">
+            {/* SPACING MAKIN RAPAT: mt-1 untuk HP */}
+            <div className="mt-1 md:mt-4 max-w-4xl px-2 pointer-events-auto leading-loose md:leading-[3]">
               <span className="bg-[#1A7A44]/50 text-white font-agrandir text-sm md:text-lg px-3 py-1.5 shadow-sm box-decoration-clone">
                 Wadah komunikasi, pengaduan, dan penyaluran aspirasi mahasiswa D4 Keselamatan dan Kesehatan Kerja, Universitas Airlangga.
               </span>
@@ -113,9 +112,10 @@ export default function Home() {
           </FadeInUp>
 
           <FadeInUp delay={0.4}>
+            {/* Jarak tombol di bawah deskripsi */}
             <motion.p
               onClick={() => navigate("/info")}
-              className="font-agrandir text-[#1A7A44] mt-8 text-sm font-bold cursor-pointer pointer-events-auto"
+              className="font-agrandir text-[#1A7A44] mt-4 md:mt-8 text-sm font-bold cursor-pointer pointer-events-auto"
               animate={{ opacity: [0.6, 1, 0.6] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
@@ -142,14 +142,12 @@ function InstagramTag({ show }: { show: boolean }) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 10 }}
           className="absolute bottom-10 left-10 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-md text-xs font-agrandir border border-white/20 pointer-events-auto shadow-xl"
-          onClick={(e) => e.stopPropagation()} // Supaya tidak men-trigger toggleTags lagi
+          onClick={(e) => e.stopPropagation()} 
         >
-          {/* Ikon Instagram Sederhana */}
           <div className="w-4 h-4 border-2 border-white rounded-sm flex items-center justify-center relative">
             <div className="w-1.5 h-1.5 border border-white rounded-full"></div>
           </div>
           <span>@himak3unair</span>
-          {/* Segitiga panah bawah ala IG Tag */}
           <div className="absolute -bottom-1.5 left-4 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-black/80"></div>
         </motion.a>
       )}
